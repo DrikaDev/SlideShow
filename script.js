@@ -1,12 +1,25 @@
+// use strict força o Javascript a usar regras mais restritas pro seu código. 
+// Funciona bem se você sabe o que está fazendo. 
+// É uma boa prática sempre que você não tem que manter código ruim.
+// Basta adicionar 'use strict' no topo do seu código, antes de qualquer outra coisa 
+// ou chama-los dentro de funções. 
+// Se você inserir dentro no topo do seu código se aplicará para todo seu código.
 'use strict';
 
+//variável = array com os objetos
 const images = [
-    {'id': '1', 'url': './img/chrono.jpg'},
-    {'id': '2', 'url': './img/inuyasha.jpg'},
-    {'id': '3', 'url': './img/ippo.png'},
-    {'id': '4', 'url': './img/tenchi.jpg'},
-    {'id': '5', 'url': './img/tenjhotenge.jpg'},
-    {'id': '6', 'url': './img/yuyuhakusho.jpg'},
+    {'id': '1', 
+    'url': './img/chrono.jpg'},
+    {'id': '2', 
+    'url': './img/inuyasha.jpg'},
+    {'id': '3', 
+    'url': './img/ippo.png'},
+    {'id': '4', 
+    'url': './img/tenchi.jpg'},
+    {'id': '5', 
+    'url': './img/tenjhotenge.jpg'},
+    {'id': '6', 
+    'url': './img/yuyuhakusho.jpg'},
 ]
 
 const containerItems = document.querySelector('#container-items')
@@ -25,18 +38,38 @@ loadImages(images, containerItems);
 
 let items = document.querySelectorAll('.item');
 
-const previous = () => {
-    //appendChild sempre adiciona no final da fila
+const next = () => {
+    //appendChild adiciona o elemento Zero pro final da fila
     containerItems.appendChild(items[0]);
     items = document.querySelectorAll('.item');
 }
+document.querySelector('#next').addEventListener('click', next);
 
-const next = () => {
-    const lastItem = items[items.lenght - 1];
+const previous = () => {
+    let lastItem = items[items.lenght - 1];
     containerItems.insertBefore(lastItem, items[0]);
     items = document.querySelectorAll('.item');
 }
+document.getElementById('previous').addEventListener('click', previous);
 
-document.querySelector('#previous').addEventListener('click', previous);
-document.querySelector('#next').addEventListener('click', next);
+const bolinhas = document.querySelectorAll('.bolinha');
+let bolinha;
 
+function acharBolinha(){
+    if (bolinha != undefined){
+        bolinha.classList.remove('bolinha-mark');
+    }
+
+    images = document.querySelectorAll('.imagem');
+    bolinhas.forEach(element => {
+        if(images[1].src.indexOf(element.id) > -1){
+            bolinha = element;
+            return bolinha;
+        }
+    })
+}
+
+function marcarBolinha(){
+    acharBolinha();
+    bolinha.classList.add('bolinha-mark');
+}
