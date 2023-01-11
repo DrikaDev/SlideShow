@@ -39,17 +39,18 @@ loadImages(images, containerItems);
 let items = document.querySelectorAll('.item');
 
 const next = () => {
-    //appendChild adiciona o elemento Zero pro final da fila
-    containerItems.appendChild(items[0]);
+    const lastItem = items[items.length - 1];
+    containerItems.insertBefore( lastItem, items[0] );
     items = document.querySelectorAll('.item');
 }
+
 document.querySelector('#next').addEventListener('click', next);
 
 const previous = () => {
-    let lastItem = items[items.lenght - 1];
-    containerItems.insertBefore(lastItem, items[0]);
+    containerItems.appendChild(items[0]);
     items = document.querySelectorAll('.item');
 }
+
 document.getElementById('previous').addEventListener('click', previous);
 
 const bolinhas = document.querySelectorAll('.bolinha');
@@ -57,7 +58,7 @@ let bolinha;
 
 function acharBolinha(){
     if (bolinha != undefined){
-        bolinha.classList.remove('bolinha-mark');
+        bolinha.classList.remove('bolinha-marcada');
     }
 
     images = document.querySelectorAll('.imagem');
@@ -71,5 +72,7 @@ function acharBolinha(){
 
 function marcarBolinha(){
     acharBolinha();
-    bolinha.classList.add('bolinha-mark');
+    bolinha.classList.add('bolinha-marcada');
 }
+
+marcarBolinha();
