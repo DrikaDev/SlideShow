@@ -4,6 +4,7 @@
 // Basta adicionar 'use strict' no topo do seu código, antes de qualquer outra coisa 
 // ou chama-los dentro de funções. 
 // Se você inserir dentro no topo do seu código se aplicará para todo seu código.
+
 'use strict';
 
 //variável = array com os objetos
@@ -22,26 +23,46 @@ const images = [
     'url': './img/yuyuhakusho.jpg'},
 ]
 
-const containerItems = document.querySelector('#container-items')
+const containerItems = document.querySelector('#container-items');
+const containerIndicators = document.querySelector('.indicators');
 
-const loadImages = (images, container) => {
-    images.forEach (image => {
-        container.innerHTML += `
-            <div class= 'item'> 
-                <img src= '${image.url}'
-            </div>
-        `
-    });
+const createIndicators = (images, container) => {
+    images.forEach ( image => {
+        container.innerHTML += `<span data-number=${image.id}>${image.id}</span>`
+    })
 }
 
-loadImages(images, containerItems);
+const loadImages = ( images, container ) => {
+    images.forEach ( image => {
+        container.innerHTML += `
+            <div class='item' data-number=${image.id}>
+                <img src='${image.url}'
+            </div>
+        `
+    })
+}
+
+loadImages( images, containerItems );
+createIndicators(images, containerIndicators);
 
 let items = document.querySelectorAll('.item');
+
+const removeClassSelected = () => {
+    const indicators = document.querySelectorAll('span');
+    indicators.forEach( indicator => indicator.classList.remove ('selected'));
+} 
+
+const selectIndicator = (number) => {
+    removeClassSelected();
+    const indicator = document.querySelector(`span[data-number="${number}"]`)
+    indicator.classList.add('selected')
+} 
 
 const next = () => {
     const lastItem = items[items.length - 1];
     containerItems.insertBefore( lastItem, items[0] );
     items = document.querySelectorAll('.item');
+    selectIndicator (items[1].dataset.number)
 }
 
 document.querySelector('#next').addEventListener('click', next);
@@ -49,30 +70,27 @@ document.querySelector('#next').addEventListener('click', next);
 const previous = () => {
     containerItems.appendChild(items[0]);
     items = document.querySelectorAll('.item');
+    selectIndicator (items[1].dataset.number)
 }
 
 document.getElementById('previous').addEventListener('click', previous);
 
-const bolinhas = document.querySelectorAll('.bolinha');
-let bolinha;
+const clickIndicators = ({target}) => {
 
-function acharBolinha(){
-    if (bolinha != undefined){
-        bolinha.classList.remove('bolinha-marcada');
-    }
-
-    images = document.querySelectorAll('.imagem');
-    bolinhas.forEach(element => {
-        if(images[1].src.indexOf(element.id) > -1){
-            bolinha = element;
-            return bolinha;
+    if ( target.tagName == 'SPAN') {
+        const selectedIndicator = target.dataset.number;
+        let visibleSlide = items[1].dataset.number
+        
+        if (selectedIndicator !== visibleSlide){    
+            const autoNext = setInterval ( () => {
+                document.querySelector('#next').click();
+                visibleSlide = items[1].dataset.number;
+                
+                if (selectedIndicator == visibleSlide) 
+                clearInterval(autoNext);
+            }, 100);
         }
-    })
+    }
 }
 
-function marcarBolinha(){
-    acharBolinha();
-    bolinha.classList.add('bolinha-marcada');
-}
-
-marcarBolinha();
+document.getElementById('indicators').addEventListener('click', clickIndicators);
