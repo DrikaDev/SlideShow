@@ -1,7 +1,7 @@
 # SlideShow
 
 Exercício para treino de JavaScript.
-Está em fase de construção/correção, pois as bolinhas ainda não funcionam.
+Está em fase de construção/correção, pois as bolinhas ainda não funcionam corretamente.
 
 <h2> Linguagens utilizadas: </h2>
 
